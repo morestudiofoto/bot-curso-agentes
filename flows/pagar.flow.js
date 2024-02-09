@@ -15,5 +15,5 @@ module.exports = addKeyword('pagar')
     }
 
     const link = await handlerStripe(phone, email)
-    await flowDynamic(`Aqui tienes el link: ${link.url}`)
+    await flowDynamic(`Aquí tienes el link: ${link.url}`)
 })

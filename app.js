@@ -1,20 +1,16 @@
-require('dotenv').config()
-const {
-  createBot,
-  createProvider,
-  createFlow,
-} = require("@bot-whatsapp/bot");
+require("dotenv").config();
+const { createBot, createProvider, createFlow } = require("@bot-whatsapp/bot");
 
 const BaileysProvider = require("@bot-whatsapp/provider/baileys");
 const MockAdapter = require("@bot-whatsapp/database/mock");
 
 const welcomeFlow = require("./flows/welcome.flow");
-const vendedorFlow = require('./flows/vendedor.flow')
-const expertoFlow = require('./flows/experto.flow')
-const pagarFlow = require('./flows/pagar.flow')
+const vendedorFlow = require("./flows/vendedor.flow");
+const expertoFlow = require("./flows/experto.flow");
+const pagarFlow = require("./flows/pagar.flow");
 
-const {init} = require('bot-ws-plugin-openai');
-const ServerAPI = require('./http');
+const { init } = require("bot-ws-plugin-openai");
+const ServerAPI = require("./http");
 /**
  * Configuracion de Plugin
  */
@@ -43,13 +39,12 @@ employeesAddon.employees([
     description:
       "Saludos, mi nombre es Juan encargado de generar los links de pagos necesarios cuando un usuario quiera hacer la recarga de puntos a la plataforma de cursos.",
     flow: pagarFlow,
-  }
-])
+  },
+]);
 
 /**
- * 
+ *
  */
-
 
 const main = async () => {
   const adapterDB = new MockAdapter();
@@ -57,27 +52,27 @@ const main = async () => {
     welcomeFlow,
     vendedorFlow,
     expertoFlow,
-    pagarFlow
+    pagarFlow,
   ]);
-  
+
   const adapterProvider = createProvider(BaileysProvider);
 
-  const httpServer = new ServerAPI(adapterProvider, adapterDB)
+  const httpServer = new ServerAPI(adapterProvider, adapterDB);
 
   const configBot = {
     flow: adapterFlow,
     provider: adapterProvider,
     database: adapterDB,
-  }
+  };
 
   const configExtra = {
-    extensions:{
-      employeesAddon
-    }
-  }
+    extensions: {
+      employeesAddon,
+    },
+  };
 
-  await createBot(configBot,configExtra);
-  httpServer.start()
+  await createBot(configBot, configExtra);
+  httpServer.start();
 };
 
 main();
